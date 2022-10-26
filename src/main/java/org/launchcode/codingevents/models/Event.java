@@ -1,8 +1,6 @@
 package org.launchcode.codingevents.models;
 
-import javax.validation.constraints.Email;
-import javax.validation.constraints.NotBlank;
-import javax.validation.constraints.Size;
+import javax.validation.constraints.*;
 import java.util.Objects;
 
 public class Event {
@@ -20,15 +18,28 @@ public class Event {
     @Email(message = "Invalid Email. Try Again.")
     private String contactEmail;
 
+    @NotNull
+    @NotBlank(message = "Location cannot be left blank.")
+    private String location;
+
+    @AssertTrue(message = "Registration is required.")
+    private boolean registration = true;
+
+    @Positive(message = "At least one person in attendance is required.")
+    private int attendanceNum;
+
+    private EventType type;
+
     public Event() {
         this.id = nextId;
         nextId++;
     }
-    public Event(String name, String description, String contactEmail) {
+    public Event(String name, String description, String contactEmail, EventType type) {
         this();
         this.name = name;
         this.description = description;
         this.contactEmail = contactEmail;
+        this.type = type;
     }
 
     public String getName() { return name; }
@@ -44,6 +55,22 @@ public class Event {
     public String getContactEmail() { return contactEmail; }
 
     public void setContactEmail(String contactEmail) { this.contactEmail = contactEmail; }
+
+    public String getLocation() { return location; }
+
+    public void setLocation(String location) { this.location = location; }
+
+    public boolean getRegistration() { return registration; }
+
+    public void setRegistration(boolean registration) { this.registration = registration; }
+
+    public int getAttendanceNum() { return attendanceNum; }
+
+    public void setAttendanceNum(int attendanceNum) { this.attendanceNum = attendanceNum; }
+
+    public EventType getType() { return type; }
+
+    public void setType(EventType type) { this.type = type; }
 
     @Override
     public String toString() {
