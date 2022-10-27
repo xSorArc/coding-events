@@ -3,7 +3,9 @@ package org.launchcode.codingevents.models;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
-import javax.validation.constraints.*;
+import javax.validation.constraints.Email;
+import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.Size;
 import java.util.Objects;
 
 @Entity
@@ -26,15 +28,15 @@ public class Event {
     @Email(message = "Invalid Email. Try Again.")
     private String contactEmail;
 
-    @NotNull
-    @NotBlank(message = "Location cannot be left blank.")
-    private String location;
-
-    @AssertTrue(message = "Registration is required.")
-    private boolean registration = true;
-
-    @Positive(message = "At least one person in attendance is required.")
-    private int attendanceNum;
+//    @NotNull                                                                      // BONUS
+//    @NotBlank(message = "Location cannot be left blank.")
+//    private String location;
+//
+//    @AssertTrue(message = "Registration is required.")
+//    private boolean registration = true;
+//
+//    @Positive(message = "At least one person in attendance is required.")
+//    private int attendanceNum;
 
     private EventType type;
 
@@ -60,17 +62,17 @@ public class Event {
 
     public void setContactEmail(String contactEmail) { this.contactEmail = contactEmail; }
 
-    public String getLocation() { return location; }
-
-    public void setLocation(String location) { this.location = location; }
-
-    public boolean getRegistration() { return registration; }
-
-    public void setRegistration(boolean registration) { this.registration = registration; }
-
-    public int getAttendanceNum() { return attendanceNum; }
-
-    public void setAttendanceNum(int attendanceNum) { this.attendanceNum = attendanceNum; }
+//    public String getLocation() { return location; }                              // BONUS
+//
+//    public void setLocation(String location) { this.location = location; }
+//
+//    public boolean getRegistration() { return registration; }
+//
+//    public void setRegistration(boolean registration) { this.registration = registration; }
+//
+//    public int getAttendanceNum() { return attendanceNum; }
+//
+//    public void setAttendanceNum(int attendanceNum) { this.attendanceNum = attendanceNum; }
 
     public EventType getType() { return type; }
 
