@@ -8,27 +8,25 @@ import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.Size;
 import java.util.Objects;
 
-@Entity
+@Entity                     // Flags class to be persistent
 public class Event {
 
-    @Id
-    @GeneratedValue
+    @Id                     // Tells SpringBoot that this is a PRIMARY KEY
+    @GeneratedValue         // Tells the database to generate the values
     private int id;
 
-    private static int nextId = 1;
-
-    @NotBlank(message = "Name is required.")
-    @Size(min = 3, max = 50, message = "Name must be between 3 and 50 characters.")
+    @NotBlank(message = "Name is required.")  // Prevents the program moving forward without an entry to name
+    @Size(min = 3, max = 50, message = "Name must be between 3 and 50 characters.")  // Restricts size of the string
     private String name;
 
     @Size(max = 500, message = "Description too long!")
     private String description;
 
     @NotBlank(message = "Email is required.")
-    @Email(message = "Invalid Email. Try Again.")
+    @Email(message = "Invalid Email. Try Again.") // Tells the program to expect email syntax (Ex. fake@email.com)
     private String contactEmail;
 
-//    @NotNull                                                                      // BONUS
+//    @NotNull              // BONUS
 //    @NotBlank(message = "Location cannot be left blank.")
 //    private String location;
 //
@@ -40,7 +38,7 @@ public class Event {
 
     private EventType type;
 
-    public Event() { }
+    public Event() {}
     public Event(String name, String description, String contactEmail, EventType type) {
         this.name = name;
         this.description = description;
