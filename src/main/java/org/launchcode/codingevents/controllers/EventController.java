@@ -25,16 +25,16 @@ public class EventController {
     private EventCategoryRepository eventCategoryRepository;
 
     @GetMapping
-    public String displayAllEvents(@RequestParam(required = false) Integer categoryId, Model model) {
+    public String displayEvents(@RequestParam(required = false) Integer categoryId, Model model) {
 
-        if (categoryId == null) {
+        if (categoryId == null) {               // Checks if categoryId exists/isn't null.
             model.addAttribute("title", "All Events");
-            model.addAttribute("events", eventRepository.findAll());
-        } else {
+            model.addAttribute("events", eventRepository.findAll()); // If null, shows all the events.
+        } else {                                // If not null, then it checks if it is linked to an id or not.
            Optional<EventCategory> result = eventCategoryRepository.findById(categoryId);
-               if (result.isEmpty()) {
+               if (result.isEmpty()) {          // If not linked, it shows "Invalid" with the given categoryId.
                    model.addAttribute("title", "Invalid Category ID: " + categoryId);
-               } else {
+               } else {                         // If it IS linked, it shows all events linked to that categoryId.
                    EventCategory category = result.get();
                    model.addAttribute("title", "Events in category: " + category.getName());
                    model.addAttribute("events", category.getEvents());
