@@ -5,7 +5,7 @@ import javax.persistence.Id;
 import javax.persistence.MappedSuperclass;
 import java.util.Objects;
 
-@MappedSuperclass       // Ensures that the id values will be stored in the event and event_category tables
+@MappedSuperclass       // Ensures that the id values will be stored in all connected tables
 public abstract class AbstractEntity {
 
     @Id                 // Tells SpringBoot that this is a PRIMARY KEY
