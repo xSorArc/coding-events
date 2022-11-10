@@ -104,27 +104,39 @@ public class EventController {
     }
 
     // Responds to requests /events/add-tag?eventId=13
-    @GetMapping("add-tag")
+    @GetMapping("add-tag") // Specifies that the handler will be available at the route /events/add-tag.
     public String displayAddTagForm(@RequestParam Integer eventId, Model model) {
+        // Queries the repository for the Event object with ID equal to the value of eventId.
         Optional<Event> result = eventRepository.findById(eventId);
+        // Extracts the Event object from the result of the query. We would ideally include a conditional to
+        // check that such an object exists before proceeding, but are omitting it here to focus on DTO usage.
         Event event = result.get();
+        // Creates a title for the form, which includes the name of the event.
         model.addAttribute("title", "Add Tag to " + event.getName());
+        // Passes a collection of all available tags into the view. This collection will be used to render a
+        // dropdown that the user can use to select the tag to be added.
         model.addAttribute("tags", tagRepository.findAll());
+        // This will be used to help render the form.
         EventTagDTO eventTag = new EventTagDTO();
+        // Assigns the event property of the eventTag DTO object. This will enable us to reference the specific
+        // event when rendering the form, so we can assign the tag to the correct event.
         eventTag.setEvent(event);
-        model.addAttribute("eventTag", eventTag);
+        model.addAttribute("eventTag", eventTag); // Passes the DTO into the view.
         return "events/add-tag";
     }
 
     @PostMapping("add-tag")
     public String processAddTagForm(@ModelAttribute @Valid EventTagDTO eventTag, Errors errors, Model model) {
-
+        // Using a DTO allows us to create and validate these objects through model binding. The same event and
+        // tag relationship information could be processed without a DTO, but this would require passing query
+        // parameters for the IDs of both event and tag objects, querying the eventRepository and tagRepository
+        // for these items, validating those objects, etc. Simply put, the DTO makes this procedure cleaner and easier.
         if(!errors.hasErrors()) {
-            Event event = eventTag.getEvent();
-            Tag tag = eventTag.getTag();
+            Event event = eventTag.getEvent();  // Retrieves event from DTO
+            Tag tag = eventTag.getTag();        // Retrieves tag from DTO
             if (!event.getTags().contains(tag)) {
-                event.addTag(tag);
-                eventRepository.save(event);
+                event.addTag(tag);              // If DTO doesn't already have the tag, adds it.
+                eventRepository.save(event);    // Saves newly added tag to event.
             }
             return "redirect:detail?eventId=" + event.getId();
         }
