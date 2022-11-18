@@ -82,22 +82,32 @@ public class EventController {
         return "redirect:";
     }
 
-//    @GetMapping("edit/{eventId}")                      // No longer works without updating code for ORM
-//    public String displayEditForm(Model model, @PathVariable int eventId) {
-//        Event eventToEdit = EventData.getById(eventId);
-//        String title = "Edit Event " + eventToEdit.getName() + " (id=" + eventToEdit.getId() + ")";
-//
-//        model.addAttribute("event", eventToEdit);
-//        model.addAttribute("title", title);
-//        return "events/edit";
-//    }
-//
-//    @PostMapping("edit")
-//    public String processEditForm(int eventId, String name, String description) {
-//        Event eventToEdit = EventData.getById(eventId);
-//        eventToEdit.setName(name);
-//        eventToEdit.setDescription(description);
-//        return "redirect:";
-//    }
+    @GetMapping("edit/{eventId}")
+    public String displayEditForm(Model model, @PathVariable int eventId) {
+        Optional<Event> optEvent = eventRepository.findById(eventId);
+
+        if (optEvent.isPresent()) {
+            Event event = optEvent.get();
+            String title = "Edit Event " + event.getName() + " (id=" + event.getId() + ")";
+            model.addAttribute("event", event);
+            model.addAttribute("title", title);
+            return "events/edit";
+        }
+        return "redirect:";
+    }
+
+    @PostMapping("edit")
+    public String processEditForm(int eventId, String name, String description) {
+        Optional<Event> optEvent = eventRepository.findById(eventId);
+
+        if (optEvent.isEmpty()) {
+            return "events/edit";
+        }
+        Event event = optEvent.get();
+        event.setName(name);
+        event.getEventDetails().setDescription(description);
+        eventRepository.save(event);
+        return "redirect:";
+    }
 
 }
